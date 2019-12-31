@@ -6,8 +6,8 @@ To contact us please drop us an email at yourfriends@flexiwan.com, or for any ge
 
 # flexiRouter
 
-This repository contains the vRouter component from flexiWAN. flexiRouter is comprised of FD.io VPP + VPPSB.
-It is published together with flexiAgent and FRR
+This repository contains the flexiWAN vRouter component. flexiRouter is comprised of FD.io VPP + VPPSB.
+It is published together with flexiAgent and FRR.
 
 # How to build and use VPP
 
