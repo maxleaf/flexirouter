@@ -2,10 +2,29 @@
 
 set -e  # exit on the first command failure
 
+
+for i in "$@"
+do
+case $i in
+    -c*|--clean*)
+    CLEAN=YES
+    shift
+    ;;
+    *)
+          # unknown option
+    ;;
+esac
+done
+echo "CLEAN = ${CLEAN}"
+
+
 cd vpp
 
 VPP_PATH=`pwd`
 
+if  [ "${CLEAN}" == "YES" ] ; then
+  make wipe
+fi
 make build
 
 cd -
