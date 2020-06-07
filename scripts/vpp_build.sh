@@ -2,10 +2,29 @@
 
 set -e  # exit on the first command failure
 
+
+for i in "$@"
+do
+case $i in
+    -c*|--clean*)
+    CLEAN=YES
+    shift
+    ;;
+    *)
+          # unknown option
+    ;;
+esac
+done
+echo "CLEAN = ${CLEAN}"
+
+
 cd vpp
 
 VPP_PATH=`pwd`
 
+if  [ "${CLEAN}" == "YES" ] ; then
+  make wipe
+fi
 make build
 
 cd -
@@ -23,13 +42,13 @@ automake --add-missing
 make
 
 # Copy it to /usr/lib/ so loader will find it while loading router.so plugin 
-if [ -d $VPP_PATH/build-root/build-vpp_debug-native/ ]; then
-  ln -sfn $(pwd)/.libs/librtnl.so $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/librtnl.so
+if [ -d $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/ ]; then
+  sudo ln -sfn $(pwd)/.libs/librtnl.so $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/librtnl.so
   sudo ln -sfn $(pwd)/.libs/librtnl.so.0 /usr/lib/x86_64-linux-gnu/librtnl.so.0
 fi
-if [ -d $VPP_PATH/build-root/build-vpp-native/ ]; then
-  ln -sfn $(pwd)/.libs/librtnl.so $VPP_PATH/build-root/build-vpp-native/vpp/lib/librtnl.so
-  ln -sfn $(pwd)/.libs/librtnl.so.0 $VPP_PATH/build-root/build-vpp-native/vpp/lib/librtnl.so.0
+if [ -d $VPP_PATH/build-root/build-vpp-native/vpp/lib/ ]; then
+  sudo ln -sfn $(pwd)/.libs/librtnl.so $VPP_PATH/build-root/build-vpp-native/vpp/lib/librtnl.so
+  sudo ln -sfn $(pwd)/.libs/librtnl.so.0 $VPP_PATH/build-root/build-vpp-native/vpp/lib/librtnl.so.0
 fi
 
 cd -
@@ -45,10 +64,10 @@ automake --add-missing
 ./configure
 make
 
-if [ -d $VPP_PATH/build-root/build-vpp_debug-native/ ]; then
+if [ -d $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/ ]; then
   ln -sfn $(pwd)/.libs/router.so $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/vpp_plugins/router.so
 fi
-if [ -d $VPP_PATH/build-root/build-vpp-native/ ]; then
+if [ -d $VPP_PATH/build-root/build-vpp-native/vpp/lib/ ]; then
   ln -sfn $(pwd)/.libs/router.so $VPP_PATH/build-root/build-vpp-native/vpp/lib/vpp_plugins/router.so
 fi
 
