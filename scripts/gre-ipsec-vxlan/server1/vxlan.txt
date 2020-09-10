@@ -1,5 +1,4 @@
 loopback create mac 1a:2b:3c:4d:5e:7f
-set interface ip address loop1 10.101.0.7/31
 
 create vxlan tunnel src 192.168.0.105 dst 192.168.0.104 vni 13
 
