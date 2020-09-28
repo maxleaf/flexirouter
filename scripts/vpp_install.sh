@@ -35,7 +35,7 @@ cd vpp
 VPP_PATH=`pwd`
 VPP_PATH_BINARIES=$VPP_PATH/build-root/build-vpp_debug-native/vpp
 
-copy_vpp_binaries $VPP_PATH_BINARIES/bin             /usr/bin                  "*vpp*"
+copy_vpp_binaries $VPP_PATH_BINARIES/bin             /usr/bin
 copy_vpp_binaries $VPP_PATH_BINARIES/lib             /usr/lib/x86_64-linux-gnu
 copy_vpp_binaries $VPP_PATH_BINARIES/lib/vpp_plugins /usr/lib/vpp_plugins
 if [ ! -f $INSTALL_ROOT/etc/vpp/startup.conf ]; then
