@@ -31,7 +31,7 @@ for intf in vpp.api.sw_interface_dump():
     print(intf.interface_name.decode())
     #r = vpp.api.sw_interface_set_dpdk_hqos_pipe(sw_if_index=intf.sw_if_index, subport=0, pipe=0, profile=0)
     #print(r)
-    #r = vpp.api.sw_interface_set_dpdk_hqos_bandwidth(sw_if_index=1, subport=0, pipe=0, bandwidth=100000)
+    #r = vpp.api.sw_interface_set_dpdk_hqos_pipe_bw(sw_if_index=1, subport=0, pipe=0, bandwidth=100000)
     #print(r)
 
 exit(vpp.disconnect())

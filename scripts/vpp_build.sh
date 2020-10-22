@@ -55,7 +55,7 @@ cd -
 
 cd router
 
-sed -i 's#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@.*#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@ -DCLIB_DEBUG -DCLIB_VEC64=0 -I../../vpp/build-root/build-vpp_debug-native/vpp -I../../vpp/src -I../netlink#g' Makefile.am
+sed -i 's#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@.*#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@ -DCLIB_DEBUG -DCLIB_VEC64=0 -I../../vpp/build-root/build-vpp_debug-native/vpp -I../../vpp/src -I../netlink -L../netlink/.libs/#g' Makefile.am
 
 libtoolize
 aclocal
