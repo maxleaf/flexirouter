@@ -39,6 +39,9 @@ aclocal
 autoconf
 automake --add-missing
 ./configure VPP_DIR=$VPP_PATH --enable-debug
+if  [ "${CLEAN}" == "YES" ] ; then
+  make clean
+fi
 make
 
 if [ -d $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/ ]; then
@@ -57,6 +60,9 @@ aclocal
 autoconf
 automake --add-missing
 ./configure
+if  [ "${CLEAN}" == "YES" ] ; then
+  make clean
+fi
 make
 
 if [ -d $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/ ]; then
