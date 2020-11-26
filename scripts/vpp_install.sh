@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e  # exit on the first command failure
+#set -e  # exit on the first command failure
 #set -x  # echo executed commands while expanding variables
 
 # keep track of the last executed command
