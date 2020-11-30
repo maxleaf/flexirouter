@@ -6,6 +6,8 @@ SCRIPTS_PATH=vpp/extras/vpp_config/scripts
 
 ip link set dev enp0s3 down
 ip link set dev enp0s8 down
+ip link set dev enp0s9 down
+ip link set dev enp0s10 down
 
 cp -r /etc/netplan/ .
 rm /etc/netplan/*
@@ -18,7 +20,7 @@ gdb --args ./build-root/build-vpp_debug-native/vpp/bin/vpp -c ../scripts/startup
 
 cd -
 
-python $SCRIPTS_PATH/dpdk-devbind.py -b e1000 00:03.0 00:08.0
+python $SCRIPTS_PATH/dpdk-devbind.py -b e1000 00:03.0 00:08.0 00:09.0 00:0a.0
 
 rm /etc/netplan/50-cloud-init.baseline.yaml
 cp netplan/* /etc/netplan
