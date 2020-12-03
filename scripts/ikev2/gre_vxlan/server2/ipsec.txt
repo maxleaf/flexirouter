@@ -1,2 +1,8 @@
-ipsec sa add 10 spi 1000 esp crypto-alg aes-cbc-128 crypto-key 4a506a794f574265564551694d653768 integ-alg sha1-96 integ-key 4339314b55523947594d6d3547666b45764e6a58
-ipsec sa add 20 spi 1001 esp crypto-alg aes-cbc-128 crypto-key 4a506a794f574265564551694d653768 integ-alg sha1-96 integ-key 4339314b55523947594d6d3547666b45764e6a58
+ikev2 profile add pr1 
+ikev2 profile set pr1 auth rsa-sig cert-file /home/denys/projects/flexirouter_20_05/scripts/ikev2/gre_vxlan/server2/client-cert.pem
+set ikev2 local key /home/denys/projects/flexirouter_20_05/scripts/ikev2/gre_vxlan/server2/server-key.pem
+ikev2 profile set pr1 id local fqdn vpp.home 
+ikev2 profile set pr1 id remote fqdn roadwarrior.vpn.example.com 
+ikev2 profile set pr1 traffic-selector remote ip-range 0.0.0.0 - 255.255.255.255 port-range 0 - 65535 protocol 0
+ikev2 profile set pr1 traffic-selector local ip-range 0.0.0.0 - 255.255.255.255 port-range 0 - 65535 protocol 0
+
