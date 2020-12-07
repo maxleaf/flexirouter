@@ -6,7 +6,7 @@ ikev2 profile set pr1 id remote fqdn vpp.home
 ikev2 profile set pr1 traffic-selector local ip-range 0.0.0.0 - 255.255.255.255 port-range 0 - 65535 protocol 0
 ikev2 profile set pr1 traffic-selector remote ip-range 0.0.0.0 - 255.255.255.255 port-range 0 - 65535 protocol 0
 
-ikev2 profile set pr1 responder loop0 10.101.0.6
+ikev2 profile set pr1 responder loop1 10.101.0.6
 ikev2 profile set pr1 ike-crypto-alg aes-cbc 256  ike-integ-alg sha1-96  ike-dh modp-2048
 ikev2 profile set pr1 esp-crypto-alg aes-cbc 256  esp-integ-alg sha1-96  esp-dh ecp-256
 ikev2 profile set pr1 sa-lifetime 3600 10 5 0
