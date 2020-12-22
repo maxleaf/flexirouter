@@ -52,4 +52,13 @@ cd -
 sudo rm -f /usr/share/vpp/api/*
 sudo find $VPP_PATH_BINARIES -type f -name "*.api.json" -exec cp {} /usr/share/vpp/api/ \;
 
+# The vpp-api 1.6.2 and later is installed by 'pip install vpp-papi' into
+# /usr/local/lib/python2.7/dist-packages/vpp_papi, that has lower priority,
+# so to ensure old files will be not used just delete them.
+# Than you have to restart flexiwan-router if it was running during installation!
+#
+if [ -d /usr/lib/python2.7/dist-packages/vpp_papi ]; then
+    sudo rm -rf /usr/lib/python2.7/dist-packages/vpp_papi
+fi
+
 cd $VPP_PATH
