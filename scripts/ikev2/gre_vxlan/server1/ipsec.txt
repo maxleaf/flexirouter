@@ -1,8 +1,8 @@
 ikev2 profile add pr1
 ikev2 profile set pr1 auth rsa-sig cert-file /etc/flexiwan/agent/ikev2/remote_certificate_AFF9E8C5-D02A-4AF9-96E6-B8E3F6A12A75.pem
 set ikev2 local key /etc/flexiwan/agent/ikev2/local_key_CB3B2590-4134-411B-B826-EA38B1A30A37.pem
-ikev2 profile set pr1 id local fqdn CB3B2590-4134-411B-B826-EA38B1A30A37
-ikev2 profile set pr1 id remote fqdn AFF9E8C5-D02A-4AF9-96E6-B8E3F6A12A75
+ikev2 profile set pr1 id local fqdn CB3B2590-4134-411B-B826-EA38B1A30A37-1
+ikev2 profile set pr1 id remote fqdn AFF9E8C5-D02A-4AF9-96E6-B8E3F6A12A75-1
 ikev2 profile set pr1 traffic-selector local ip-range 0.0.0.0 - 255.255.255.255 port-range 0 - 65535 protocol 0
 ikev2 profile set pr1 traffic-selector remote ip-range 0.0.0.0 - 255.255.255.255 port-range 0 - 65535 protocol 0
 
@@ -16,8 +16,8 @@ ikev2 initiate sa-init pr1
 ikev2 profile add pr2
 ikev2 profile set pr2 auth rsa-sig cert-file /etc/flexiwan/agent/ikev2/remote_certificate_AFF9E8C5-D02A-4AF9-96E6-B8E3F6A12A75.pem
 set ikev2 local key /etc/flexiwan/agent/ikev2/local_key_CB3B2590-4134-411B-B826-EA38B1A30A37.pem
-ikev2 profile set pr2 id local fqdn CB3B2590-4134-411B-B826-EA38B1A30A37
-ikev2 profile set pr2 id remote fqdn AFF9E8C5-D02A-4AF9-96E6-B8E3F6A12A75
+ikev2 profile set pr2 id local fqdn CB3B2590-4134-411B-B826-EA38B1A30A37-2
+ikev2 profile set pr2 id remote fqdn AFF9E8C5-D02A-4AF9-96E6-B8E3F6A12A75-2
 ikev2 profile set pr2 traffic-selector local ip-range 0.0.0.0 - 255.255.255.255 port-range 0 - 65535 protocol 0
 ikev2 profile set pr2 traffic-selector remote ip-range 0.0.0.0 - 255.255.255.255 port-range 0 - 65535 protocol 0
 
