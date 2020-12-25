@@ -49,6 +49,9 @@ cd src/vpp-api/python
 sudo python setup.py install
 cd -
 
+if [ ! -d /usr/share/vpp/api ]; then
+    sudo mkdir -p /usr/share/vpp/api
+fi
 sudo rm -f /usr/share/vpp/api/*
 sudo find $VPP_PATH_BINARIES -type f -name "*.api.json" -exec cp {} /usr/share/vpp/api/ \;
 
