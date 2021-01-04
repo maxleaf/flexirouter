@@ -44,6 +44,8 @@ fi
 if [ ! -f $INSTALL_ROOT/etc/sysctl.d/80-vpp.conf ]; then
     copy_vpp_binaries $VPP_PATH/src/vpp/conf /etc/sysctl.d "80-vpp.conf"
 fi
+
+sudo rm -rf /usr/share/vpp/api/*
 sudo find $VPP_PATH_BINARIES -type f -name "*.api.json" -exec cp {} /usr/share/vpp/api/ \;
 
 cd $VPP_PATH
