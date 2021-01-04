@@ -8,12 +8,31 @@ trap 'last_status=$?; last_command=$current_command; current_command=$BASH_COMMA
 # echo an error message before exiting
 trap 'if [ $last_status == 0 ]; then echo "DONE"; else echo "ABORTED !"; fi' EXIT
 
+
+
 # Parse arguments
-INSTALL_ROOT=
-if [ "$1" != "" ]; then
-    mkdir -p $1
+for i in "$@"
+do
+case $i in
+    --install-root*)
+    INSTALL_ROOT=$(realpath $2)
+    shift   # skip argument name
+    shift   # skip argument value
+    ;;
+    --release*)
+    RELEASE=YES
+    shift   # skip argument name
+    ;;
+    *)
+    # unknown option
     INSTALL_ROOT=$(realpath $1)
-fi
+    shift   # skip argument name
+    ;;
+esac
+done
+
+echo "INSTALL_ROOT: ${INSTALL_ROOT}"
+echo "RELEASE: ${RELEASE}"
 
 function copy_vpp_binaries {
     SRC_DIR=$1/
@@ -33,7 +52,12 @@ function copy_vpp_binaries {
 cd vpp
 
 VPP_PATH=`pwd`
-VPP_PATH_BINARIES=$VPP_PATH/build-root/build-vpp_debug-native/vpp
+if [ ! -z $RELEASE ]
+then
+  VPP_PATH_BINARIES=$VPP_PATH/build-root/build-vpp-native/vpp
+else
+  VPP_PATH_BINARIES=$VPP_PATH/build-root/build-vpp_debug-native/vpp
+fi
 
 copy_vpp_binaries $VPP_PATH_BINARIES/bin             /usr/bin                  "*vpp*"
 copy_vpp_binaries $VPP_PATH_BINARIES/lib             /usr/lib/x86_64-linux-gnu

@@ -3,5 +3,19 @@
 SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`
 
-$SCRIPTPATH/vpp_build.sh
-$SCRIPTPATH/vpp_install.sh
+
+for i in "$@"
+do
+case $i in
+    --release*)
+    RELEASE=--release
+    shift
+    ;;
+    *)
+    # unknown option
+    ;;
+esac
+done
+
+$SCRIPTPATH/vpp_build.sh ${RELEASE}
+$SCRIPTPATH/vpp_install.sh ${RELEASE}

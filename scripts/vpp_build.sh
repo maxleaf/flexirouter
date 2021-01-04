@@ -10,22 +10,34 @@ case $i in
     CLEAN=YES
     shift
     ;;
+    --release*)
+    RELEASE=-release
+    shift
+    ;;
     *)
           # unknown option
     ;;
 esac
 done
-echo "CLEAN = ${CLEAN}"
+echo "CLEAN:   ${CLEAN}"
+echo "RELEASE: ${RELEASE}"
 
 
 cd vpp
 
 VPP_PATH=`pwd`
+if [ ! -z "${RELEASE}" ]
+then
+  VPP_PATH_BINARIES=$VPP_PATH/build-root/build-vpp-native/vpp
+else
+  VPP_PATH_BINARIES=$VPP_PATH/build-root/build-vpp_debug-native/vpp
+fi
+
 
 if  [ "${CLEAN}" == "YES" ] ; then
-  make wipe
+  make wipe${RELEASE}
 fi
-make build
+make build${RELEASE}
 
 cd -
 
@@ -38,22 +50,25 @@ libtoolize
 aclocal
 autoconf
 automake --add-missing
-./configure VPP_DIR=$VPP_PATH --enable-debug
+if [ -z "${RELEASE}" ]; then
+  ENABLE_DEBUG=--enable-debug
+fi
+./configure VPP_DIR=$VPP_PATH $ENABLE_DEBUG
 if  [ "${CLEAN}" == "YES" ] ; then
   make clean
 fi
 make
 
-if [ -d $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/ ]; then
-  ln -sfn $(pwd)/.libs/librtnl.so $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/librtnl.so
-  ln -sfn $(pwd)/.libs/librtnl.so.0 $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/librtnl.so.0
+if [ -d $VPP_PATH_BINARIES/lib/ ]; then
+  ln -sfn $(pwd)/.libs/librtnl.so $VPP_PATH_BINARIES/lib/librtnl.so
+  ln -sfn $(pwd)/.libs/librtnl.so.0 $VPP_PATH_BINARIES/lib/librtnl.so.0
 fi
 
 cd -
 
 cd router
 
-sed -i 's#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@.*#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@ -DCLIB_DEBUG -DCLIB_VEC64=0 -I../../vpp/build-root/build-vpp_debug-native/vpp -I../../vpp/src -I../netlink -L../netlink/.libs#g' Makefile.am
+sed -i 's#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@.*#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@ -DCLIB_DEBUG -DCLIB_VEC64=0 -I../../vpp/src -I../netlink -L../netlink/.libs#g' Makefile.am
 
 libtoolize
 aclocal
@@ -65,8 +80,8 @@ if  [ "${CLEAN}" == "YES" ] ; then
 fi
 make
 
-if [ -d $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/ ]; then
-  ln -sfn $(pwd)/.libs/router.so $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/vpp_plugins/router.so
+if [ -d $VPP_PATH_BINARIES/lib/ ]; then
+  ln -sfn $(pwd)/.libs/router.so $VPP_PATH_BINARIES/lib/vpp_plugins/router.so
 fi
 
 cd $VPP_PATH
