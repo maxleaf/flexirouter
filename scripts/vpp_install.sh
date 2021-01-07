@@ -8,12 +8,31 @@ trap 'last_status=$?; last_command=$current_command; current_command=$BASH_COMMA
 # echo an error message before exiting
 trap 'if [ $last_status == 0 ]; then echo "DONE"; else echo "ABORTED !"; fi' EXIT
 
+
+
 # Parse arguments
-INSTALL_ROOT=
-if [ "$1" != "" ]; then
-    mkdir -p $1
+for i in "$@"
+do
+case $i in
+    --install-root*)
+    INSTALL_ROOT=$(realpath $2)
+    shift   # skip argument name
+    shift   # skip argument value
+    ;;
+    --release*)
+    RELEASE=YES
+    shift   # skip argument name
+    ;;
+    *)
+    # unknown option
     INSTALL_ROOT=$(realpath $1)
-fi
+    shift   # skip argument name
+    ;;
+esac
+done
+
+echo "INSTALL_ROOT: ${INSTALL_ROOT}"
+echo "RELEASE: ${RELEASE}"
 
 function copy_vpp_binaries {
     SRC_DIR=$1/
@@ -33,7 +52,12 @@ function copy_vpp_binaries {
 cd vpp
 
 VPP_PATH=`pwd`
-VPP_PATH_BINARIES=$VPP_PATH/build-root/build-vpp_debug-native/vpp
+if [ ! -z $RELEASE ]
+then
+  VPP_PATH_BINARIES=$VPP_PATH/build-root/build-vpp-native/vpp
+else
+  VPP_PATH_BINARIES=$VPP_PATH/build-root/build-vpp_debug-native/vpp
+fi
 
 copy_vpp_binaries $VPP_PATH_BINARIES/bin             /usr/bin
 copy_vpp_binaries $VPP_PATH_BINARIES/lib             /usr/lib/x86_64-linux-gnu
@@ -45,6 +69,17 @@ if [ ! -f $INSTALL_ROOT/etc/sysctl.d/80-vpp.conf ]; then
     copy_vpp_binaries $VPP_PATH/src/vpp/conf /etc/sysctl.d "80-vpp.conf"
 fi
 
+# The flexiwan-router image installs vpp-api into /usr/lib/python2.7/dist-packages/,
+# when the official installation either by 'pip isntall vpp-papi' or by fdio script
+# installs it into /usr/local/lib/python2.7/dist-packages/.
+# To ensure the proper files are taken just remove both folders and run fdio script.
+#
+if [ -d /usr/lib/python2.7/dist-packages/vpp_papi ]; then
+    sudo rm -rf /usr/lib/python2.7/dist-packages/vpp_papi*
+fi
+if [ -d /usr/local/lib/python2.7/dist-packages/vpp_papi ]; then
+    sudo rm -rf /usr/local/lib/python2.7/dist-packages/vpp_papi*
+fi
 cd src/vpp-api/python
 sudo python setup.py install
 cd -
@@ -52,16 +87,7 @@ cd -
 if [ ! -d /usr/share/vpp/api ]; then
     sudo mkdir -p /usr/share/vpp/api
 fi
-sudo rm -f /usr/share/vpp/api/*
+sudo rm -rf /usr/share/vpp/api/*
 sudo find $VPP_PATH_BINARIES -type f -name "*.api.json" -exec cp {} /usr/share/vpp/api/ \;
-
-# The vpp-api 1.6.2 and later is installed by 'pip install vpp-papi' into
-# /usr/local/lib/python2.7/dist-packages/vpp_papi, that has lower priority,
-# so to ensure old files will be not used just delete them.
-# Than you have to restart flexiwan-router if it was running during installation!
-#
-if [ -d /usr/lib/python2.7/dist-packages/vpp_papi ]; then
-    sudo rm -rf /usr/lib/python2.7/dist-packages/vpp_papi
-fi
 
 cd $VPP_PATH
