@@ -74,12 +74,9 @@ fi
 # installs it into /usr/local/lib/python2.7/dist-packages/.
 # To ensure the proper files are taken just remove both folders and run fdio script.
 #
-if [ -d /usr/lib/python2.7/dist-packages/vpp_papi ]; then
-    sudo rm -rf /usr/lib/python2.7/dist-packages/vpp_papi*
-fi
-if [ -d /usr/local/lib/python2.7/dist-packages/vpp_papi ]; then
-    sudo rm -rf /usr/local/lib/python2.7/dist-packages/vpp_papi*
-fi
+sudo rm -rf /usr/lib/python2.7/dist-packages/vpp_papi*
+sudo rm -rf /usr/local/lib/python2.7/dist-packages/vpp_papi*
+
 cd src/vpp-api/python
 sudo python setup.py install
 cd -
