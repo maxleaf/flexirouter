@@ -59,18 +59,19 @@ if  [ "${CLEAN}" == "YES" ] ; then
 fi
 make
 
-if [ -d $VPP_PATH_BINARIES/lib/ ]; then
-  ln -sfn $(pwd)/.libs/librtnl.so $VPP_PATH_BINARIES/lib/librtnl.so
-  ln -sfn $(pwd)/.libs/librtnl.so.0 $VPP_PATH_BINARIES/lib/librtnl.so.0
+# Copy it to /usr/lib/ so loader will find it while loading router.so plugin 
+if [ -d $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/ ]; then
+  cp $(pwd)/.libs/librtnl.so* $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/
 fi
 
 cd -
 
 cd router
 
-cmd="sed -i 's#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@.*#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@ -DCLIB_DEBUG -DCLIB_VEC64=0 -I../../vpp/src -I$VPP_PATH_BINARIES -I../netlink -L../netlink/.libs#g' Makefile.am"
-echo $smd
-eval $cmd
+#cmd="sed -i 's#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@.*#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@ -DCLIB_DEBUG -DCLIB_VEC64=0 -I../../vpp/src -I$VPP_PATH_BINARIES -I../netlink -L../netlink/.libs#g' Makefile.am"
+#echo $smd
+#eval $cmd
+sed -i 's#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@.*#AM_CFLAGS = -Wall -I@TOOLKIT_INCLUDE@ -DCLIB_DEBUG -DCLIB_VEC64=0 -I../../vpp/build-root/build-vpp_debug-native/vpp -I../../vpp/src -I../netlink -L../netlink/.libs#g' Makefile.am
 
 libtoolize
 aclocal
@@ -82,8 +83,10 @@ if  [ "${CLEAN}" == "YES" ] ; then
 fi
 make
 
-if [ -d $VPP_PATH_BINARIES/lib/ ]; then
-  ln -sfn $(pwd)/.libs/router.so $VPP_PATH_BINARIES/lib/vpp_plugins/router.so
+#if [ -d $VPP_PATH_BINARIES/lib/ ]; then
+#  ln -sfn $(pwd)/.libs/router.so $VPP_PATH_BINARIES/lib/vpp_plugins/router.so
+if [ -d $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/ ]; then
+  cp $(pwd)/.libs/router.so* $VPP_PATH/build-root/build-vpp_debug-native/vpp/lib/vpp_plugins/
 fi
 
 cd $VPP_PATH
