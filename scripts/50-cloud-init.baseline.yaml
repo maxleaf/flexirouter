@@ -1,16 +1,12 @@
 network:
   ethernets:
     vpp0:
-      addresses: [192.168.0.122/24]
+      addresses: [192.168.0.123/24]
       routes:
         - to: 0.0.0.0/0
           via: 192.168.0.1
-          metric: 500
+          metric: 50
     vpp1:
-      addresses: [10.0.4.15/24]
-      routes:
-        - to: 0.0.0.0/0
-          via: 10.0.4.2
-          metric: 500000
-
+      addresses: [20.20.20.1/24]
   version: 2
+  renderer: networkd
