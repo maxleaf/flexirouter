@@ -49,6 +49,19 @@ function copy_vpp_binaries {
     find $SRC_DIR -maxdepth 1 -type l $SRC_FILES | sudo xargs -I {} cp {} $DST_DIR/
 }
 
+
+# Clean leftovers from the previous installations or elder versions of vpp.
+# For example, vpp 21.01 does not generates plugin tests, so it does not overrides
+# the old ones if exist. They fail vpp start, as they are not compatibe with 21.01
+#
+if [ -d /usr/lib/vpp_api_test_plugins ]; then
+    sudo rm -rf /usr/lib/vpp_api_test_plugins
+fi
+if [ -d /usr/local/lib/python3.6/dist-packages/vpp_papi ]; then
+    sudo rm -rf /usr/local/lib/python3.6/dist-packages/vpp_papi
+fi
+
+
 cd vpp
 
 VPP_PATH=`pwd`
@@ -61,7 +74,7 @@ fi
 
 copy_vpp_binaries $VPP_PATH_BINARIES/bin             /usr/bin
 copy_vpp_binaries $VPP_PATH_BINARIES/lib             /usr/lib/x86_64-linux-gnu
-copy_vpp_binaries $VPP_PATH_BINARIES/lib/vpp_plugins /usr/lib/vpp_plugins
+copy_vpp_binaries $VPP_PATH_BINARIES/lib/vpp_plugins /usr/lib/x86_64-linux-gnu/vpp_plugins
 if [ ! -f $INSTALL_ROOT/etc/vpp/startup.conf ]; then
     copy_vpp_binaries $VPP_PATH/src/vpp/conf /etc/vpp "startup.conf"
 fi
