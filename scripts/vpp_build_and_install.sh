@@ -11,11 +11,15 @@ case $i in
     RELEASE=--release
     shift
     ;;
+    --clean*)
+    CLEAN=--clean
+    shift
+    ;;
     *)
     # unknown option
     ;;
 esac
 done
 
-$SCRIPTPATH/vpp_build.sh ${RELEASE}
-$SCRIPTPATH/vpp_install.sh ${RELEASE}
+$SCRIPTPATH/vpp_build.sh ${RELEASE} ${CLEAN}
+$SCRIPTPATH/vpp_install.sh ${RELEASE} ${CLEAN}
