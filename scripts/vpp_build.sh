@@ -60,8 +60,7 @@ fi
 make
 
 if [ -d $VPP_PATH_BINARIES/lib/ ]; then
-  ln -sfn $(pwd)/.libs/librtnl.so $VPP_PATH_BINARIES/lib/librtnl.so
-  ln -sfn $(pwd)/.libs/librtnl.so.0 $VPP_PATH_BINARIES/lib/librtnl.so.0
+  cp $(pwd)/.libs/librtnl.so* $VPP_PATH_BINARIES/lib/
 fi
 
 cd -
@@ -83,7 +82,7 @@ fi
 make
 
 if [ -d $VPP_PATH_BINARIES/lib/ ]; then
-  ln -sfn $(pwd)/.libs/router.so $VPP_PATH_BINARIES/lib/vpp_plugins/router.so
+  cp $(pwd)/.libs/router.so $VPP_PATH_BINARIES/lib/vpp_plugins/
 fi
 
 cd $VPP_PATH
