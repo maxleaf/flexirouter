@@ -37,7 +37,7 @@ fi
 if  [ "${CLEAN}" == "YES" ] ; then
   make wipe${RELEASE}
 fi
-make build${RELEASE}
+make build${RELEASE} VPP_EXTRA_CMAKE_ARGS=-DVPP_ENABLE_SANITIZE_ADDR=ON
 
 cd -
 
