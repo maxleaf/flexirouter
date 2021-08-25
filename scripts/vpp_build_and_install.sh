@@ -21,5 +21,5 @@ case $i in
 esac
 done
 
-$SCRIPTPATH/vpp_build.sh ${RELEASE} ${CLEAN}
-$SCRIPTPATH/vpp_install.sh ${RELEASE} ${CLEAN}
+$SCRIPTPATH/build_vpp/vpp_build.sh ${RELEASE} ${CLEAN}
+$SCRIPTPATH/build_vpp/vpp_install.sh ${RELEASE} ${CLEAN}
