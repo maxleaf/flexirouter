@@ -60,6 +60,9 @@ fi
 if [ -d /usr/local/lib/python3.6/dist-packages/vpp_papi ]; then
     sudo rm -rf /usr/local/lib/python3.6/dist-packages/vpp_papi
 fi
+if [ -d /usr/lib/x86_64-linux-gnu/vpp_plugins ]; then
+    sudo rm -rf /usr/lib/x86_64-linux-gnu/vpp_plugins/*
+fi
 
 
 cd vpp
